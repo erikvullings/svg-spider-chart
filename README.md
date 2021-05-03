@@ -1,5 +1,7 @@
 # SVG-Spider-Chart
 
+[![NPM](https://nodei.co/npm/svg-spider-chart.png?compact=true)](https://npmjs.org/package/svg-spider-chart)
+
 ![SVG spider chart](img/svg-spider-chart.png)
 
 SVG-based spider chart, a.k.a. radar chart, based on [Derhuerst's version](https://github.com/derhuerst/svg-radar-chart). The main differences are:
