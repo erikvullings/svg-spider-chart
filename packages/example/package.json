@@ -1,0 +1,61 @@
+{
+  "name": "example",
+  "private": "true",
+  "version": "0.0.1",
+  "description": "SVG example.",
+  "scripts": {
+    "clean": "rimraf dist",
+    "cleanup": "npm run clean",
+    "dev": "npm start",
+    "start": "webpack serve --env development --open",
+    "build": "webpack --env production",
+    "build:domain": "npm run clean && npm run build",
+    "link": "pnpm link project-board-shared",
+    "link2": "npm link mithril-ui-form"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikvullings/svg-spider-chart.git"
+  },
+  "keywords": [
+    "spider chart",
+    "radar chart",
+    "svg"
+  ],
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikvullings/svg-spider-chart/issues"
+  },
+  "homepage": "https://github.com/erikvullings/svg-spider-chart#readme",
+  "app": "src/index.html",
+  "targets": {
+    "app": {
+      "distDir": "../server/public"
+    }
+  },
+  "browserslist": "> 0.25%",
+  "engines": {
+    "browsers": "> 0.25%"
+  },
+  "dependencies": {
+    "mithril": "^2.0.4",
+    "svg-spider-chart": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/mithril": "^2.0.7",
+    "rimraf": "^3.0.2",
+    "css-loader": "^5.2.1",
+    "css-minimizer-webpack-plugin": "^2.0.0",
+    "dotenv-webpack": "^7.0.2",
+    "html-webpack-plugin": "^5.3.1",
+    "html-webpack-tags-plugin": "^3.0.1",
+    "mini-css-extract-plugin": "^1.4.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

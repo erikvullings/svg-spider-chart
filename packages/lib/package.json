@@ -1,0 +1,40 @@
+{
+  "name": "svg-spider-chart",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "esmodule": "dist/index.modern.js",
+  "unpkg": "dist/index.umd.js",
+  "typings": "dist/index.d.ts",
+  "description": "SVG-based spider chart, a.k.a. radar chart.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikvullings/svg-spider-chart.git"
+  },
+  "keywords": [
+    "spider chart",
+    "radar chart",
+    "svg"
+  ],
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikvullings/svg-spider-chart/issues"
+  },
+  "homepage": "https://github.com/erikvullings/svg-spider-chart#readme",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "microbundle src/index.ts",
+    "start": "microbundle watch src/index.ts",
+    "dry-run": "npm publish --dry-run",
+    "patch-release": "npm run clean && npm run build && npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
+    "minor-release": "npm run clean && npm run build && npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
+    "major-release": "npm run clean && npm run build && npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
+  },
+  "devDependencies": {
+    "microbundle": "^0.13.0",
+    "rimraf": "^3.0.2",
+    "tslib": "^2.1.0",
+    "typescript": "^4.2.4"
+  }
+}

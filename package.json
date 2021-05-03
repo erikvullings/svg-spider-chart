@@ -1,0 +1,30 @@
+{
+  "name": "svg-spider-chart",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "SVG-based spider chart, a.k.a. radar chart.",
+  "scripts": {
+    "clean": "pnpm recursive run cleanup",
+    "start": "pnpm recursive run dev",
+    "update": "pnpm recursive run update",
+    "build": "pnpm recursive run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikvullings/svg-spider-chart.git"
+  },
+  "keywords": [
+    "spider chart",
+    "radar chart",
+    "svg"
+  ],
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikvullings/svg-spider-chart/issues"
+  },
+  "homepage": "https://github.com/erikvullings/svg-spider-chart#readme",
+  "devDependencies": {
+    "pnpm": "^6.2.3"
+  }
+}
