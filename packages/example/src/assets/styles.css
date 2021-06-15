@@ -12,9 +12,8 @@ body {
   padding: 2rem 1rem;
   background-color: #f0f0f0;
 }
-
+/* 
 #demo-target {
-  /* width: 30rem; */
   max-width: 100%;
 }
 #demo-target .axis {
@@ -42,4 +41,4 @@ body {
   fill: #444;
   font-weight: normal;
   text-shadow: 1px 1px 0 #fff;
-}
+} */

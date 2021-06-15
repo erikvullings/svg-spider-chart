@@ -7,6 +7,7 @@ SVG-based spider chart, a.k.a. radar chart, based on [Derhuerst's version](https
 - The virtual dom library can be injected, for example, you can inject [mithril's](mithriljs.org) `m` function.
 - By default, a spider chart is displayed instead of a radar chart, i.e. using linear scale lines instead of circles.
 - It provides a Mithril component factory, `SpiderChartFactory`, to create `SpiderCharts` by injecting mithril's `m` function.
+- You can specify a CSS style to use in the options (so when you save it, the CSS style is saved too).
 - Using Typescript also provides type definitions.
 
 ## Playground

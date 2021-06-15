@@ -53,6 +53,35 @@ const options = {
     className: 'shape',
     fill: data.color as string,
   }),
+  style: `#demo-target {
+    max-width: 100%;
+  }
+  #demo-target .axis {
+    stroke: #555;
+    stroke-width: 0.2;
+  }
+  #demo-target .scale {
+    fill: #eee;
+    stroke: #999;
+    stroke-width: 0.2;
+  }
+  #demo-target .shape {
+    fill-opacity: 0.3;
+    stroke-width: 0.5;
+  }
+  #demo-target:hover .shape {
+    fill-opacity: 0.1;
+  }
+  #demo-target .shape:hover,
+  #demo-target:hover .shape:hover {
+    fill-opacity: 0.6;
+  }
+  #demo-target .caption {
+    font-size: 4px;
+    fill: #444;
+    font-weight: normal;
+    text-shadow: 1px 1px 0 #fff;
+  }`,
 } as Partial<SpiderOptions>;
 
 const SpiderChart = SpiderChartFactory(m);

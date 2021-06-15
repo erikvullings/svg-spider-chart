@@ -39,34 +39,31 @@ export type SpiderOptions = {
   /** Shape smoothing function, returns an SVG string */
   smoothing: (points: Points) => string;
   /** Properties affecting the radial axis */
-  axisProps: (
-    col: SpiderDataColumn,
-  ) => { className: string; [key: string]: string | number | boolean };
+  axisProps: (col: SpiderDataColumn) => {
+    className: string;
+    [key: string]: string | number | boolean;
+  };
   /** Properties affecting the circular or spider-web-like scale lines */
-  scaleProps: (
-    value: number,
-  ) => {
+  scaleProps: (value: number) => {
     className: string;
     fill: string;
     [key: string]: string | number | boolean;
   };
   /** Properties affecting the spider's chart shape */
-  shapeProps: (
-    data: SpiderData,
-  ) => {
+  shapeProps: (data: SpiderData) => {
     className: string;
     fill?: string;
     [key: string]: string | number | boolean | undefined;
   };
-  captionProps: (
-    col?: SpiderDataColumn,
-  ) => {
+  captionProps: (col?: SpiderDataColumn) => {
     className: string;
     'text-anchor': string;
     'font-size': number;
     'font-family': string;
     [key: string]: string | number;
   };
+  /** If present, will be added as style element to the SVG */
+  style?: string;
 };
 
 type SpiderConfiguration = SpiderOptions & {
@@ -100,45 +97,42 @@ const points = (points: Points) => {
     .join(' ');
 };
 
-const axis = (m: VNodeFactory, opt: SpiderConfiguration) => (
-  col: SpiderDataColumn,
-) =>
-  m(
-    'polyline',
-    Object.assign(opt.axisProps(col), {
-      points: points([
-        [0, 0],
-        [
-          polarToX(col.angle, opt.chartSize / 2),
-          polarToY(col.angle, opt.chartSize / 2),
-        ],
-      ]),
-    }),
-  );
+const axis =
+  (m: VNodeFactory, opt: SpiderConfiguration) => (col: SpiderDataColumn) =>
+    m(
+      'polyline',
+      Object.assign(opt.axisProps(col), {
+        points: points([
+          [0, 0],
+          [
+            polarToX(col.angle, opt.chartSize / 2),
+            polarToY(col.angle, opt.chartSize / 2),
+          ],
+        ]),
+      }),
+    );
 
-const shape = (
-  m: VNodeFactory,
-  columns: SpiderDataColumn[],
-  opt: SpiderConfiguration,
-) => (data: SpiderData, i: number) =>
-  m(
-    'path',
-    Object.assign(opt.shapeProps(data), {
-      d: opt.smoothing(
-        columns.map((col) => {
-          const val = data[col.key];
-          if ('number' !== typeof val) {
-            throw new Error(`Data set ${i} is invalid.`);
-          }
+const shape =
+  (m: VNodeFactory, columns: SpiderDataColumn[], opt: SpiderConfiguration) =>
+  (data: SpiderData, i: number) =>
+    m(
+      'path',
+      Object.assign(opt.shapeProps(data), {
+        d: opt.smoothing(
+          columns.map((col) => {
+            const val = data[col.key];
+            if ('number' !== typeof val) {
+              throw new Error(`Data set ${i} is invalid.`);
+            }
 
-          return [
-            polarToX(col.angle, (val * opt.chartSize) / 2),
-            polarToY(col.angle, (val * opt.chartSize) / 2),
-          ];
-        }),
-      ),
-    }),
-  );
+            return [
+              polarToX(col.angle, (val * opt.chartSize) / 2),
+              polarToY(col.angle, (val * opt.chartSize) / 2),
+            ];
+          }),
+        ),
+      }),
+    );
 
 const scale = (
   m: VNodeFactory,
@@ -167,18 +161,17 @@ const scale = (
         }),
       );
 
-const caption = (m: VNodeFactory, opt: SpiderConfiguration) => (
-  col: SpiderDataColumn,
-) =>
-  m(
-    'text',
-    Object.assign(opt.captionProps(col), {
-      x: polarToX(col.angle, (opt.size / 2) * 0.95).toFixed(4),
-      y: polarToY(col.angle, (opt.size / 2) * 0.95).toFixed(4),
-      dy: (opt.captionProps(col)['font-size'] || 2) / 2,
-    }),
-    col.caption,
-  );
+const caption =
+  (m: VNodeFactory, opt: SpiderConfiguration) => (col: SpiderDataColumn) =>
+    m(
+      'text',
+      Object.assign(opt.captionProps(col), {
+        x: polarToX(col.angle, (opt.size / 2) * 0.95).toFixed(4),
+        y: polarToY(col.angle, (opt.size / 2) * 0.95).toFixed(4),
+        dy: (opt.captionProps(col)['font-size'] || 2) / 2,
+      }),
+      col.caption,
+    );
 
 const noSmoothing = (points: Points) =>
   points
@@ -208,40 +201,42 @@ const defaults = {
 
 export type VNodeFactory = (...attrs: any[]) => any;
 
-export const render = (m: VNodeFactory) => (
-  columns: SpiderColumns,
-  data: SpiderData[],
-  options = {} as Partial<SpiderOptions>,
-) => {
-  if ('object' !== typeof columns || Array.isArray(columns)) {
-    throw new Error('columns must be an object');
-  }
-  if (!Array.isArray(data)) {
-    throw new Error('data must be an array');
-  }
-  const opt = Object.assign({}, defaults, options) as SpiderOptions;
-  opt.chartSize = opt.size / opt.captionsPosition;
-
-  const dataColumns = Object.keys(columns).map((key, i, all) => ({
-    key,
-    caption: columns[key],
-    angle: (Math.PI * 2 * i) / all.length,
-  })) as SpiderDataColumn[];
-
-  const groups = [m('g', data.map(shape(m, dataColumns, opt)))];
-  if (opt.captions) groups.push(m('g', dataColumns.map(caption(m, opt))));
-  if (opt.axes) groups.unshift(m('g', dataColumns.map(axis(m, opt))));
-  if (opt.scales > 0) {
-    const scales = [];
-    for (let i = opt.scales; i > 0; i--) {
-      scales.push(scale(m, opt, i / opt.scales, dataColumns));
+export const render =
+  (m: VNodeFactory) =>
+  (
+    columns: SpiderColumns,
+    data: SpiderData[],
+    options = {} as Partial<SpiderOptions>,
+  ) => {
+    if ('object' !== typeof columns || Array.isArray(columns)) {
+      throw new Error('columns must be an object');
     }
-    groups.unshift(m('g', scales));
-  }
+    if (!Array.isArray(data)) {
+      throw new Error('data must be an array');
+    }
+    const opt = Object.assign({}, defaults, options) as SpiderOptions;
+    opt.chartSize = opt.size / opt.captionsPosition;
 
-  const delta = (opt.size / 2).toFixed(4);
-  return m('g', { transform: `translate(${delta},${delta})` }, groups);
-};
+    const dataColumns = Object.keys(columns).map((key, i, all) => ({
+      key,
+      caption: columns[key],
+      angle: (Math.PI * 2 * i) / all.length,
+    })) as SpiderDataColumn[];
+
+    const groups = [m('g', data.map(shape(m, dataColumns, opt)))];
+    if (opt.captions) groups.push(m('g', dataColumns.map(caption(m, opt))));
+    if (opt.axes) groups.unshift(m('g', dataColumns.map(axis(m, opt))));
+    if (opt.scales > 0) {
+      const scales = [];
+      for (let i = opt.scales; i > 0; i--) {
+        scales.push(scale(m, opt, i / opt.scales, dataColumns));
+      }
+      groups.unshift(m('g', scales));
+    }
+
+    const delta = (opt.size / 2).toFixed(4);
+    return m('g', { transform: `translate(${delta},${delta})` }, groups);
+  };
 
 /** Initialize the factory with the virtual dom library to create spider charts (for mithril) */
 export const SpiderChartFactory = (m: VNodeFactory) => {
@@ -256,7 +251,7 @@ export const SpiderChartFactory = (m: VNodeFactory) => {
       width?: string;
       height?: string;
       [key: string]: any;
-    }
+    },
   >(): { view: ({}: { attrs: T }) => any } => ({
     view: ({
       attrs: { id, viewBox = '-10 0 120 100', columns, data, options, ...a },
@@ -270,6 +265,7 @@ export const SpiderChartFactory = (m: VNodeFactory) => {
           viewBox,
           ...a,
         },
+        options && options.style && m('style', options.style),
         r(columns, data, options),
       ),
   });

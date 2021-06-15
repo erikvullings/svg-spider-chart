@@ -1,6 +1,6 @@
 {
   "name": "svg-spider-chart",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "esmodule": "dist/index.modern.js",
